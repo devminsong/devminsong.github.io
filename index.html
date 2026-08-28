@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Min Song</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="profile-col">
+          <img class="avatar" src="images/avatar-placeholder.svg" alt="Profile photo">
+          <ul class="social-links">
+            <li><a href="mailto:you@example.com" aria-label="Email"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg></a></li>
+            <li><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.4 151.7c.325 4.548 .325 9.097 .325 13.65 0 138.7-105.6 298.6-298.6 298.6-59.45 0-114.7-17.22-161.1-47.11 8.447 .974 16.57 1.299 25.34 1.299 49.06 0 94.21-16.57 130.3-44.83-46.13-.975-84.79-31.19-98.11-72.77 6.5 .974 13 1.624 19.82 1.624 9.421 0 18.84-1.3 27.61-3.573-48.08-9.741-84.14-51.98-84.14-102.1v-1.299c13.97 7.797 30.21 12.67 47.43 13.32-28.26-18.84-46.78-51-46.78-87.4 0-19.49 5.197-37.34 14.29-52.95 51.6 63.67 129.3 105.3 216.4 109.8-1.624-7.797-2.599-15.92-2.599-24.04 0-57.83 46.78-104.9 104.9-104.9 30.21 0 57.5 12.67 76.66 33.14 23.72-4.548 46.46-13.32 66.6-25.34-7.797 24.37-24.37 44.83-46.13 57.83 21.12-2.273 41.58-8.122 60.42-16.24-14.29 20.79-32.16 39.31-52.63 54.25z"/></svg></span></li>
+            <li><a href="https://scholar.google.com/citations?user=YOUR_ID" target="_blank" rel="noopener" aria-label="Google Scholar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M390.9 298.5c0 0 0 .1 .1 .1c9.2 19.4 14.4 41.1 14.4 64C405.3 445.1 338.5 512 256 512s-149.3-66.9-149.3-149.3c0-22.9 5.2-44.6 14.4-64h0c1.7-3.6 3.6-7.2 5.6-10.7c4.4-7.6 9.4-14.7 15-21.3c27.4-32.6 68.5-53.3 114.4-53.3c33.6 0 64.6 11.1 89.6 29.9c9.1 6.9 17.4 14.7 24.8 23.5c5.6 6.6 10.6 13.8 15 21.3c2 3.4 3.8 7 5.5 10.5zm26.4-18.8c-30.1-58.4-91-98.4-161.3-98.4s-131.2 40-161.3 98.4L0 202.7 256 0 512 202.7l-94.7 77.1z"/></svg></a></li>
+          </ul>
+        </div>
+        <div class="bio">
+          <h1 class="bio-name">Min Song</h1>
+          <p class="bio-text">
+            I'm interested in simulating real-world environments that are difficult to reproduce, using
+            synthetic data to build deep learning models.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <h2>Projects</h2>
+      <div class="project-list">
+
+        <div class="project-row">
+          <a class="project-thumb-link" href="projects/SimLec-HCE/index.html">
+            <img class="project-thumb" src="images/thumbs/simlec-hce-thumb.jpg" alt="">
+          </a>
+          <div class="project-info">
+            <h3 class="project-title">
+              <a href="projects/SimLec-HCE/index.html">Synthetic Data from Simulated Lecture Environments for Handwritten Content Extraction</a>
+            </h3>
+            <p class="project-meta">School of Computing, DePaul University</p>
+            <p class="project-desc">3D physically-based simulation of lecture environments for generating pixel-perfect synthetic training data for handwritten content binarization.</p>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/devminsong/SimLec-HCE" target="_blank" rel="noopener">Project Page</a>
+              <a class="project-link" href="https://ieeexplore.ieee.org/ielaam/6287639/9312710/9494351-aam.pdf" target="_blank" rel="noopener">Paper</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Duplicate the .project-row block above for each additional project -->
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Min Song — School of Computing, DePaul University</p>
+  </footer>
+
+</body>
+</html>

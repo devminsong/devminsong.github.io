@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SimLec-HCE: Simulated Lecture Environments for Handwritten Content Extraction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <div class="container project-page">
+
+    <p class="back-link"><a href="../../index.html">&larr; Min Song</a></p>
+
+    <h1 class="project-title-main">SimLec-HCE</h1>
+    <p class="project-authors">Min Song, Kenny Davila — School of Computing, DePaul University</p>
+
+    <div class="project-badges">
+      <a href="https://github.com/devminsong/SimLec-HCE" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/badge/ICDAR--2026-Accepted-blue.svg" alt="ICDAR 2026 Accepted">
+      </a>
+      <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+      </a>
+    </div>
+
+    <div class="project-links-main">
+      <a class="project-link" href="https://github.com/devminsong/SimLec-HCE" target="_blank" rel="noopener">Project Page</a>
+    </div>
+
+    <p>
+      <strong>A synthetic data generation pipeline that simulates the geometric and optical characteristics of real
+      classroom environments through 3D physical simulation and efficiently generates pixel-level ground-truth
+      masks.</strong>
+    </p>
+
+    <div class="project-hero-main">
+      <img src="images/whiteboard_rgb.jpg" alt="Synthetic RGB lecture frame showing an instructor writing math on a whiteboard">
+    </div>
+
+    <section class="project-section">
+      <h2>Project Overview</h2>
+      <p>
+        Large-scale, high-quality pixel-level datasets are essential for deep learning-based lecture video analysis,
+        particularly for handwritten content segmentation and extraction. However, the limitations of
+        <strong>manual annotation</strong> lead to a shortage of training data.
+      </p>
+      <p>
+        <strong>SimLec-HCE</strong> addresses this problem by designing a Unity HDRP-based 3D physical rendering
+        framework that simulates the interactions among physical camera lenses, classroom lighting, 3D human
+        avatars, and writing surface materials, while automatically generating ground-truth masks.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>The Core Problem: The Annotation Bottleneck</h2>
+      <p>Manually annotating handwritten pixels in lecture frame images is an extremely inefficient process.</p>
+      <ul>
+        <li><strong>Manual annotation cost:</strong> Approximately <strong>40 minutes</strong> per image.</li>
+        <li><strong>For 128,000 images:</strong> Approximately <strong>85,300 person-hours</strong>, equivalent to
+          <strong>about 40 years</strong> of continuous work for a single person.</li>
+        <li><strong>SimLec-HCE's solution:</strong> Built a fully automated 3D data generation pipeline that
+          dramatically reduces this cost. (Generating <strong>64,000 images requires only 5.2 hours</strong>. The
+          version uploaded to this repository includes optimization improvements over the original 14.2-hour
+          pipeline.)</li>
+      </ul>
+    </section>
+
+    <section class="project-section">
+      <h2>Limitations of 2D Synthesis</h2>
+      <p>
+        Conventional 2D synthesis methods, which simply composite handwriting onto static backgrounds and overlay
+        COCO human masks, lack physical interactions and therefore introduce a significant
+        <strong>Sim-to-Real Gap</strong>.
+      </p>
+      <div class="project-images">
+        <img src="images/prev_synth.jpg" alt="Previous 2D synthesis method: flat pasted background text versus its COCO person-mask ground truth">
+      </div>
+
+      <h3>1. Inability to Simulate 3D Occlusions and Shadows</h3>
+      <p>
+        2D image compositing cannot physically reproduce three-dimensional occlusions that occur when an instructor
+        moves in front of the board, nor can it simulate <strong>dynamic cast shadows</strong> projected onto the
+        writing surface.
+      </p>
+
+      <h3>2. Limited Reproduction of Optical Reflection Properties</h3>
+      <p>
+        It cannot reproduce the real optical interactions between illumination and board materials, such as
+        <strong>specular reflection</strong> on whiteboards or <strong>diffuse reflection</strong> on chalkboards.
+        As a result, the synthesized handwriting often appears visually detached from the background.
+      </p>
+
+      <h3>3. Missing Spatial Distortion and Context</h3>
+      <p>
+        There are inherent limitations in reproducing <strong>perspective distortion</strong> caused by real camera
+        lenses, as well as subtle physical illumination changes resulting from the directionality of indoor
+        lighting.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Our Solution: 3D Physically-Based Data Generation</h2>
+      <p>To overcome these limitations, we designed a pipeline that physically renders every component inside a virtual 3D environment.</p>
+      <p>
+        <strong>Highly realistic 3D classroom environment:</strong> Simulates various 3D classroom layouts, window
+        lighting that changes according to time and weather conditions, a <strong>3D human avatar</strong> that
+        mimics the instructor's random movements, and the physical appearance of real whiteboard and chalkboard
+        surfaces.
+      </p>
+      <div class="project-images">
+        <img src="images/env.jpg" alt="Physically rendered 3D lecture room with window daylight and an instructor avatar at the whiteboard">
+      </div>
+      <p>
+        <strong>G-Buffer-based Automatic Annotation:</strong> Even when the instructor avatar occludes the writing,
+        the rendering engine performs real-time Depth (Z-buffer) testing so that only the
+        <strong>visible handwriting regions</strong> are included in the pixel-level ground-truth mask. We do not
+        control the buffer directly — Unity Perception handles this automatically.
+      </p>
+      <div class="project-images">
+        <img src="images/whiteboard_gt.jpg" alt="Automatically generated pixel-level ground-truth mask">
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Data Generation Pipeline</h2>
+      <p>The pipeline consists of the following stages.</p>
+      <div class="project-images">
+        <img class="no-border" src="images/pipeline.jpg" alt="Data generation pipeline: static resource preparation feeding a dynamic simulation loop that outputs RGB, binary GT, and metadata">
+      </div>
+
+      <h3>1. 2D Content Loading &amp; Stochastic Layout</h3>
+      <ul>
+        <li><strong>Dataset Loading:</strong> Loads public datasets including <code>CROHME</code>,
+          <code>WikiMath</code> (mathematical expressions), <code>IAM</code>, <code>TotalText</code> (handwriting),
+          and <code>QuickDraw</code> (graphics).</li>
+        <li><strong>Logical Line Packing:</strong> Handwriting samples are randomly arranged on a 3D board plane
+          using a line-wrapping algorithm similar to that of a word processor. Small positional jitter is applied
+          to generate irregular layouts resembling real handwritten notes.</li>
+      </ul>
+
+      <h3>2. Shader-level Writing Physics</h3>
+      <p>To go beyond simple texture rendering, custom shaders simulate the interactions between writing instruments and board surfaces.</p>
+      <ul>
+        <li><strong>Drip (Ink Flow):</strong> Simulates the slight spreading or downward flow of liquid marker ink.</li>
+        <li><strong>Break (Stroke Discontinuity):</strong> Simulates stroke discontinuities and fine powder-like
+          textures caused by friction when writing with chalk.</li>
+        <li><strong>Thickness (Pressure Variation):</strong> Simulates variations in stroke thickness and texture
+          caused by differences in writing pressure and writing speed.</li>
+      </ul>
+      <div class="project-images">
+        <img src="images/deformations.jpg" alt="Drip, break, and thickness shader deformation examples on handwritten strokes">
+      </div>
+
+      <h3>3. Domain Randomization</h3>
+      <p>Randomly samples scene parameters within predefined probability distributions, including:</p>
+      <ul>
+        <li>Lighting layout</li>
+        <li>Illumination intensity (Lux/Lumen)</li>
+        <li>Camera field of view (FOV)</li>
+        <li>Chalkboard eraser marks</li>
+        <li>Surface scratches</li>
+        <li>And more...</li>
+      </ul>
+      <p>to improve the robustness and generalization capability of the trained model.</p>
+    </section>
+
+    <section class="project-section">
+      <h2>Key Results &amp; Cost Efficiency</h2>
+
+      <h3>1. Strong Generalization (Zero-shot Performance)</h3>
+      <p>Zero-shot evaluation was performed on the real-world <code>LectureMath</code> dataset <strong>without any training on real images</strong>.</p>
+      <ul>
+        <li><strong>F1-score of the model pretrained on 3D synthetic data:</strong> <strong>79.48%</strong></li>
+        <li><strong>Improvement over the previous 2D synthesis method:</strong> <strong>+10.26 percentage points</strong></li>
+        <li><strong>Significance:</strong> Demonstrates that physically-based 3D environment modeling can help bridge the Sim-to-Real Gap.</li>
+      </ul>
+
+      <h3>2. Time and Cost Efficiency</h3>
+      <ul>
+        <li><strong>Generation speed:</strong> Approximately <strong>30 seconds per 100 images</strong> on a single laptop/workstation.</li>
+        <li><strong>Cost efficiency:</strong> More than <strong>8,000&times;</strong> more cost-effective than manual annotation for building a training dataset.</li>
+      </ul>
+    </section>
+
+    <section class="project-section">
+      <h2>Repository Link &amp; Citation</h2>
+      <p>
+        The source code of the data generation pipeline used in this work is available in this repository. You can
+        explore the implementation and reproduce the data generation process. If you find this project useful in
+        your research, please consider citing our work.
+      </p>
+      <pre><code>@InProceedings{10.1007/978-3-032-36033-5_30,
+  author    = {Song, Min and Davila, Kenny},
+  editor    = {Fink, Gernot A. and Forn{\'e}s, Alicia and Kise, Koichi and Lopresti, Daniel},
+  title     = {Synthetic Data from Simulated Lecture Environments for Handwritten Content Extraction},
+  booktitle = {Document Analysis and Recognition -- ICDAR 2026},
+  year      = {2027},
+  publisher = {Springer Nature Switzerland},
+  address   = {Cham},
+  pages     = {503--519},
+  isbn      = {978-3-032-36033-5}
+}</code></pre>
+    </section>
+
+  </div>
+
+  <footer>
+    <ul>
+      <li><a href="mailto:devminsong@gmail.com">Email</a></li>
+      <li><a href="https://github.com/devminsong">GitHub</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>
